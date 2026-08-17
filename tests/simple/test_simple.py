@@ -308,15 +308,17 @@ def test_fail_under(
 
     process = gcovr_test_exec.gcovr(
         "--decision",
-        "--fail-under-decision=50.1",
+        "--fail-under-condition-or-decision=50.1",
         "--print-summary",
         use_main=True,
     )
     assert process.returncode == 8
     messages = caplog.record_tuples
-    assert len(messages) == 1
+    assert len(messages) == 2
     assert messages[0][1] == logging.ERROR
-    assert messages[0][2].startswith("Failed minimum decision coverage ")
+    assert messages[0][2].startswith("Failed minimum condition coverage ")
+    assert messages[1][1] == logging.ERROR
+    assert messages[1][2].startswith("Failed minimum decision coverage ")
     caplog.clear()
 
     process = gcovr_test_exec.gcovr(
@@ -335,22 +337,24 @@ def test_fail_under(
         "--fail-under-line=80.1",
         "--fail-under-branch=50.1",
         "--decision",
-        "--fail-under-decision=50.1",
+        "--fail-under-condition-or-decision=50.1",
         "--fail-under-function=66.8",
         "--print-summary",
         use_main=True,
     )
     assert process.returncode == 30
     messages = caplog.record_tuples
-    assert len(messages) == 4
+    assert len(messages) == 5
     assert messages[0][1] == logging.ERROR
     assert messages[0][2].startswith("Failed minimum line coverage ")
     assert messages[1][1] == logging.ERROR
     assert messages[1][2].startswith("Failed minimum branch coverage ")
     assert messages[2][1] == logging.ERROR
-    assert messages[2][2].startswith("Failed minimum decision coverage ")
+    assert messages[2][2].startswith("Failed minimum condition coverage ")
     assert messages[3][1] == logging.ERROR
-    assert messages[3][2].startswith("Failed minimum function coverage ")
+    assert messages[3][2].startswith("Failed minimum decision coverage ")
+    assert messages[4][1] == logging.ERROR
+    assert messages[4][2].startswith("Failed minimum function coverage ")
     caplog.clear()
 
     process = gcovr_test_exec.gcovr(
@@ -358,7 +362,7 @@ def test_fail_under(
         "61.5" if gcovr_test_exec.is_llvm() else "63.6",
         "--fail-under-branch=50.0",
         "--decision",
-        "--fail-under-decision=50.0",
+        "--fail-under-condition-or-decision=50.0",
         "--fail-under-function=66.7",
         "--print-summary",
         use_main=True,
@@ -366,5 +370,6 @@ def test_fail_under(
     assert process.returncode == 0
     assert "(ERROR) Failed minimum line coverage" not in process.stderr
     assert "(ERROR) Failed minimum branch coverage" not in process.stderr
+    assert "(ERROR) Failed minimum condition coverage" not in process.stderr
     assert "(ERROR) Failed minimum decision coverage" not in process.stderr
     assert "(ERROR) Failed minimum function coverage" not in process.stderr
