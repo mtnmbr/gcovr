@@ -19,18 +19,17 @@
 
 import logging
 import os
-from pathlib import Path
 import platform
-import sys
 import re
+import sys
+from pathlib import Path
 
 import pytest
 
 from gcovr.__main__ import main
 from gcovr.data_model.coverage import FileCoverage
-from gcovr.version import __version__
 from gcovr.data_model.version import FORMAT_VERSION
-
+from gcovr.version import __version__
 from tests.conftest import GCOVR_ISOLATED_TEST
 
 
@@ -615,6 +614,7 @@ def test_html_injection_via_json(
     capsys: pytest.CaptureFixture[str], tmp_path: Path
 ) -> None:
     import json
+
     import markupsafe
 
     script = '<script>alert("pwned")</script>'
@@ -639,8 +639,8 @@ def test_html_injection_via_json(
 
 
 def test_import_valid_cobertura_file(tmp_path: Path) -> None:
-    from gcovr.formats import read_reports
     from gcovr.configuration import merge_options_and_set_defaults
+    from gcovr.formats import read_reports
 
     testfile = "code.cpp"
     xml_data = f"""<?xml version='1.0' encoding='UTF-8'?>
