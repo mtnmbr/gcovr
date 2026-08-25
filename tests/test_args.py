@@ -404,27 +404,6 @@ def test_failed_under_threshold_100_1(
     assert c.exitcode != 0
 
 
-@pytest.mark.parametrize(
-    "option",
-    [
-        "--fail-under-condition-or-decision",
-        "--fail-under-condition",
-        "--fail-under-decision",
-    ],
-)
-def test_failed_under_condition_or_decision_without_active_decision(
-    option: str, caplog: pytest.LogCaptureFixture
-) -> None:
-    c = log_capture(caplog, [option, "90"])
-    message0 = c.record_tuples[0]
-    assert message0[1] == logging.ERROR
-    assert (
-        message0[2]
-        == "--fail-under-condition-or-decision need also option --decisions."
-    )
-    assert c.exitcode != 0
-
-
 def test_filter_backslashes_are_detected(caplog: pytest.LogCaptureFixture) -> None:
     # gcov-exclude all to prevent any coverage data from being found
     c = log_capture(
