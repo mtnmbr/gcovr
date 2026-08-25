@@ -15,16 +15,6 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v6
-        with:
-          repository: ${{ github.event.workflow_run.head_repository.full_name }}
-          ref: ${{ github.event.workflow_run.head_sha }}
-          fetch-depth: 0
-
-      - name: Show upload commit context
-        run: |
-          echo "workflow_run.head_branch=${{ github.event.workflow_run.head_branch }}"
-          echo "workflow_run.head_sha=${{ github.event.workflow_run.head_sha }}"
-          echo "checked_out_sha=$(git rev-parse HEAD)"
 
       - name: Download artifacts
         uses: dawidd6/action-download-artifact@bf251b5aa9c2f7eeb574a96ee720e24f801b7c11
