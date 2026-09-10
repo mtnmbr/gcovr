@@ -203,8 +203,8 @@ class GcovHandler(BaseHandler):
             )
 
     def read_report(self) -> CoverageContainer:
-        from .read import (
-            read_report,  # pylint: disable=import-outside-toplevel # Lazy loading is intended here
+        from .read import (  # pylint: disable=import-outside-toplevel # Lazy loading is intended here
+            read_report,
         )
 
         if self.options.json_compare:
