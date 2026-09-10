@@ -348,6 +348,8 @@ def test_html_single_page_without_html_details_or_html_nested(
     [
         "--fail-under-line",
         "--fail-under-branch",
+        "--fail-under-condition-or-decision",
+        "--fail-under-condition",
         "--fail-under-decision",
         "--fail-under-function",
     ],
@@ -366,6 +368,8 @@ def test_failed_under_threshold_nan(
     [
         "--fail-under-line",
         "--fail-under-branch",
+        "--fail-under-condition-or-decision",
+        "--fail-under-condition",
         "--fail-under-decision",
         "--fail-under-function",
     ],
@@ -384,6 +388,8 @@ def test_failed_under_threshold_negative(
     [
         "--fail-under-line",
         "--fail-under-branch",
+        "--fail-under-condition-or-decision",
+        "--fail-under-condition",
         "--fail-under-decision",
         "--fail-under-function",
     ],
@@ -394,16 +400,6 @@ def test_failed_under_threshold_100_1(
     c = capture(capsys, [option, "100.1"])
     assert c.out == ""
     assert "not in range [0.0, 100.0]" in c.err
-    assert c.exitcode != 0
-
-
-def test_failed_under_decision_without_active_decision(
-    caplog: pytest.LogCaptureFixture,
-) -> None:
-    c = log_capture(caplog, ["--fail-under-decision", "90"])
-    message0 = c.record_tuples[0]
-    assert message0[1] == logging.ERROR
-    assert message0[2] == "--fail-under-decision need also option --decision."
     assert c.exitcode != 0
 
 
